@@ -3,6 +3,12 @@
 
 @section('content')
 <!-- yield section start -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    setTimeout(function() {
+        $('.alert-div').fadeOut('fast');
+    }, 3000); // <-- time in milliseconds
+</script>
 
 <!-- Header content -->
 <section class="content-header">
@@ -23,12 +29,12 @@
 <!-- /Header content -->
 
 @if(Session::has('Success'))
-<div class="alert alert-success">
+<div class="alert alert-success alert-div"> 
     {{Session::get('Success')}}
 </div>
 @endif
 @if(Session::has('Error'))
-<div class="alert alert-danger">
+<div class="alert alert-danger alert-div">
     {{Session::get('Error')}}
 </div>
 @endif
@@ -83,6 +89,38 @@
                                         <span class="text-white pl-3">{{$errors->first('catid')}}</span>
                                     </div>
                                     @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="type" class="col-sm-2 col-form-label">Type:</label>
+                                <div class="col-sm-10">
+                                    <select name="type" class="form-control">
+                                        <option value="0" selected>None</option>
+                                        <option value="1">Featured</option>
+                                        <option value="2">Recommended</option>
+                                    </select>
+                                    @if($errors->has('type'))
+                                    <div class="alert-danger">
+                                        <span class="text-white pl-3">{{$errors->first('type')}}</span>
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="image" class="col-sm-2 col-form-label">Image:</label>
+                                <div class="col-sm-10">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="image" name="image" onchange="preview()">
+                                        <label class="custom-file-label" for="image">Choose image</label>
+                                    </div>
+                                    @if($errors->has('image'))
+                                    <div class="alert-danger">
+                                        <span class="text-white pl-3">{{$errors->first('image')}}</span>
+                                    </div>
+                                    @endif
+                                    <img class="my-2" id="frame" src="" alt="preview" width="200px" height="200px"/>
                                 </div>
                             </div>
 
@@ -162,7 +200,7 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="filenames" class="col-sm-2 col-form-label">Images:</label>
+                                <label for="filenames" class="col-sm-2 col-form-label">Additional Images:</label>
                                 <div class="col-sm-10">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" id="filenames" name="filenames[]" multiple>
@@ -220,6 +258,11 @@
             imagesPreview(this, 'div.gallery');
         });
     });
+</script>
+<script>
+    function preview() {
+        frame.src = URL.createObjectURL(event.target.files[0]);
+    }
 </script>
 
 @stop

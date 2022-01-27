@@ -17,13 +17,13 @@ class CreateUserAddressesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('name', 50);
+            $table->string('email');
             $table->string('address_1');
             $table->string('address_2')->nullable();
             $table->string('city', 100);
             $table->bigInteger('postal_code');
             $table->string('state', 100);
             $table->string('mobile');
-            $table->string('comment')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

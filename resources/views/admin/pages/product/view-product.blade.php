@@ -17,13 +17,12 @@
                         pid: id
                     },
                     success: function(response) {
-                        if(response == 'Product deleted successfully'){
+                        if (response == 'Product deleted successfully') {
                             window.location.href = "{{url('/product')}}";
-                        }
-                        else{
+                        } else {
                             alert(response)
                         }
-                     
+
                     }
                 })
             }
@@ -38,8 +37,15 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Product - {{ $proData->code }}</h1>
+                <h1>Product - {{ $proData->type }}
+                </h1>
                 <p>Added on - {{ $proData->created_at }}</p>
+                @if( $proData->type == 1)
+                    <h5 class="text-primary">Featured</h5>
+                    @endif
+                    @if( $proData->type == 2)
+                    <h5 class="text-danger">Recommended</h5>
+                    @endif
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -75,6 +81,15 @@
                             <label for="desc" class="col-sm-2 col-form-label">Description:</label>
                             <div class="col-sm-10">
                                 <textarea readonly class="form-control">{{ $proData->description }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="img" class="col-sm-2 col-form-label">Thumbnail:</label>
+                            <div class="col-sm-10">
+                                <div>
+                                    <img src="{{asset('/uploads/thumbnails/'.$proData->thumbnail)}}" class="my-2 img-thumbnail" id="preview-img-tag" alt="Preview" height="200px" width="200px" />
+                                </div>
                             </div>
                         </div>
 

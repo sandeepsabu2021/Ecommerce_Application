@@ -11,18 +11,18 @@ use Illuminate\Support\Facades\Redirect;
 
 class CategoryController extends Controller
 {
-    public function category()
+    public function category()      // show categories
     {
         $catData = Category::paginate(5);
         return view('admin.pages.category.category', ['catData' => $catData]);
     }
 
-    public function addCategory()
+    public function addCategory()   // add category
     {
         return view('admin.pages.category.add-category');
     }
 
-    public function categoryValid(Request $req)
+    public function categoryValid(Request $req)     // add category validation
     {
         $validateCat = $req->validate([
             'name' => 'required|unique:categories',
@@ -56,7 +56,7 @@ class CategoryController extends Controller
         return view('admin.pages.category.edit-category', ['catData' => $cat]);
     }
 
-    public function editCatValid(Request $req) // edit category validation
+    public function editCatValid(Request $req)   // edit category validation
     {
         $validateCat = $req->validate([
             'name' => 'required',
@@ -82,7 +82,7 @@ class CategoryController extends Controller
         }
     }
 
-    public function delCategory(Request $req)
+    public function delCategory(Request $req)      // delete category
     {
         $id = $req->cid;
         $cat = Category::where('id', '=', $id)->first();
@@ -99,6 +99,8 @@ class CategoryController extends Controller
                             unlink($imgName);
                             $i->delete();
                         }
+                        $img = public_path('uploads/thumbnails/') . $p->thumbnail;
+                        unlink($img);
                         $p->delete();
                     }
                 }

@@ -27,6 +27,12 @@
 
     })
 </script>
+<script>
+    setTimeout(function() {
+        $('.alert-div').fadeOut('fast');
+    }, 3000); // <-- time in milliseconds
+</script>
+
 <div class="container">
 
     <!-- Header content -->
@@ -47,12 +53,12 @@
     </section>
 
     @if(Session::has('Success'))
-    <div class="alert alert-success">
+    <div class="alert alert-success alert-div">
         {{Session::get('Success')}}
     </div>
     @endif
     @if(Session::has('Error'))
-    <div class="alert alert-danger">
+    <div class="alert alert-danger alert-div">
         {{Session::get('Error')}}
     </div>
     @endif

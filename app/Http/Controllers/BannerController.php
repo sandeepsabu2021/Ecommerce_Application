@@ -19,20 +19,20 @@ class BannerController extends Controller
         return view('admin.pages.banner.add-banner');
     }
 
-    public function bannerValid(Request $req)    //banner validation
+    public function bannerValid(Request $req)    //add banner validation
     {
         $validateBanner = $req->validate([
-            'title' => 'required|regex:/^[a-zA-Z ]{2,100}$/',
-            'subtitle' => 'required|regex:/^[a-zA-Z ]{5,100}$/',
+            'title' => 'required|regex:/^[a-zA-Z0-9 ]{2,100}$/',
+            'subtitle' => 'required|regex:/^[a-zA-Z0-9 ]{5,100}$/',
             'body' => 'required|min:5|max:500',
             'image' => 'required|mimes:jpeg,jpg,png',
 
         ], [
             'title.required' => "Enter title",
-            'title.regex' => "Alphabets only, 2-100 characters",
+            'title.regex' => "Alphanumeric only, 2-100 characters",
 
             'subtitle.required' => "Enter sub-title",
-            'subtitle.regex' => "Alphabets only, 5-100 characters",
+            'subtitle.regex' => "Alphanumeric only, 5-100 characters",
 
             'body.required' => "Enter body",
             'body.min' => "Minimum 5 characters",
@@ -66,7 +66,7 @@ class BannerController extends Controller
         return view('admin.pages.banner.edit-banner', ['bannerData' => $bannerData]);
     }
 
-    public function editBannerValid(Request $req)    //user validation
+    public function editBannerValid(Request $req)    //edit banner validation
     {
         $validateBanner = $req->validate([
             'title' => 'required|regex:/^[a-zA-Z ]{2,100}$/',

@@ -27,6 +27,11 @@
 
     })
 </script>
+<script>
+    setTimeout(function() {
+        $('.alert-div').fadeOut('fast');
+    }, 3000); // <-- time in milliseconds
+</script>
 
 <!-- Header content -->
 <section class="content-header">
@@ -47,12 +52,12 @@
 <!-- /Header content -->
 
 @if(Session::has('Success'))
-<div class="alert alert-success">
+<div class="alert alert-success alert-div">
     {{Session::get('Success')}}
 </div>
 @endif
 @if(Session::has('Error'))
-<div class="alert alert-danger">
+<div class="alert alert-danger alert-div">
     {{Session::get('Error')}}
 </div>
 @endif
@@ -108,6 +113,46 @@
                                         <span class="text-white pl-3">{{$errors->first('catid')}}</span>
                                     </div>
                                     @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="type" class="col-sm-2 col-form-label">Type:</label>
+                                <div class="col-sm-10">
+                                    <select name="type" class="form-control">
+                                        <option value="0" <?php if ($proData->type == 0) {
+                                                                echo 'selected';
+                                                            } ?>>None</option>
+                                        <option value="1" <?php if ($proData->type == 1) {
+                                                                echo 'selected';
+                                                            } ?>>Featured</option>
+                                        <option value="2" <?php if ($proData->type == 2) {
+                                                                echo 'selected';
+                                                            } ?>>Recommended</option>
+                                    </select>
+                                    @if($errors->has('type'))
+                                    <div class="alert-danger">
+                                        <span class="text-white pl-3">{{$errors->first('type')}}</span>
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="image" class="col-sm-2 col-form-label">Thumbnail:</label>
+                                <div class="col-sm-10">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="image" name="image">
+                                        <label class="custom-file-label" for="inputGroupFile01">Change image</label>
+                                    </div>
+                                    @if($errors->has('image'))
+                                    <div class="alert-danger">
+                                        <span class="text-white pl-3">{{$errors->first('image')}}</span>
+                                    </div>
+                                    @endif
+                                    <div>
+                                        <img src="{{asset('/uploads/thumbnails/'.$proData->thumbnail)}}" class="my-2" id="preview-img-tag" alt="Preview" height="200px" width="200px" />
+                                    </div>
                                 </div>
                             </div>
 
@@ -259,6 +304,19 @@
         $('#filenames').on('change', function() {
             imagesPreview(this, 'div.gallery');
         });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function(e) {
+
+        $('#image').change(function() {
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                $('#preview-img-tag').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(this.files[0]);
+        });
+
     });
 </script>
 

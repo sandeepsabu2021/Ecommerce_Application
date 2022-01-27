@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OtherController;
 use App\Http\Middleware\IsLogin;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsInvManager;
@@ -19,7 +20,6 @@ Route::get('/', function () {
 
 Auth::routes(['register' => false]);
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware([IsLogin::class])->group(function () {
     Route::get('/test', function () {
@@ -52,7 +52,33 @@ Route::middleware([IsLogin::class])->group(function () {
         Route::post('/editbannervalid', [BannerController::class, 'editBannerValid']);
         Route::delete('/deletebanner', [BannerController::class, 'delBanner']);
 
+        Route::get('/cms', [OtherController::class, 'cms']);
+        Route::get('/add-cms', [OtherController::class, 'addCms']);
+        Route::post('/cmsvalid', [OtherController::class, 'cmsValid']);
+        Route::get('/edit-cms-{id}', [OtherController::class, 'editCms']);
+        Route::post('/editcmsvalid', [OtherController::class, 'editCmsValid']);
+        Route::delete('/deletecms', [OtherController::class, 'delCms']);
+
+        Route::get('/config', [OtherController::class, 'config']);
+        Route::get('/add-config', [OtherController::class, 'addConfig']);
+        Route::post('/configvalid', [OtherController::class, 'configValid']);
+        Route::get('/edit-config-{id}', [OtherController::class, 'editConfig']);
+        Route::post('/editconfigvalid', [OtherController::class, 'editConfigValid']);
+        Route::delete('/deleteconfig', [OtherController::class, 'delConfig']);
+
+        Route::get('/coupon', [OtherController::class, 'coupon']);
+        Route::get('/add-coupon', [OtherController::class, 'addCoupon']);
+        Route::post('/couponvalid', [OtherController::class, 'couponValid']);
+        Route::get('/edit-coupon-{id}', [OtherController::class, 'editCoupon']);
+        Route::post('/editcouponvalid', [OtherController::class, 'editCouponValid']);
+        Route::delete('/deletecoupon', [OtherController::class, 'delCoupon']);
+
+        Route::get('/dashboard', [AdminController::class, 'dashboard']);
+
         Route::get('/contact', [ContactController::class, 'contact']);
+        Route::get('/reply-contact-{id}', [ContactController::class, 'replyContact']);
+        Route::post('/replyvalid', [ContactController::class, 'replyValid']);
+
     });
 
     Route::middleware([IsInvManager::class])->group(function () {
@@ -83,7 +109,7 @@ Route::middleware([IsLogin::class])->group(function () {
         });
 
         Route::get('/order', [OrderController::class, 'order']);
-
+        Route::post('/ordervalid/{id}', [OrderController::class, 'orderValid']);
     });
 
     Route::get('/logout', [AdminController::class, 'logout']);
