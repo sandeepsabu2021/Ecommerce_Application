@@ -36,8 +36,10 @@ class ProductController extends Controller
             'name' => 'required',
             'desc' => 'required|max:500',
             'catid' => 'required',
+            'type'  => 'required',
             'price' => 'required',
             'quantity' => 'required',
+            'image' => 'required|mimes:jpeg,jpg,png',
             'filenames.*' => 'mimes:jpeg,jpg,png',
         ], [
             'name.required' => "Enter name",
@@ -49,6 +51,9 @@ class ProductController extends Controller
 
             'price.required' => "Enter price",
 
+            'image.required' => "Select image",
+            'image.mimes' => "Only jpeg, jpg and png files allowed",
+
             'quantity.required' => "Enter quantity",
 
             'filenames.mimes' => "Only jpeg, jpg and png files allowed",
@@ -59,12 +64,16 @@ class ProductController extends Controller
             $pro->name = $req->name;
             $pro->description = $req->desc;
             $pro->category_id = $req->catid;
+            $pro->type = $req->type;
             $pro->code = $uuid;
             $pro->price = $req->price;
             $pro->quantity = $req->quantity;
+            $name = time() . "--" . $uuid . '.' . $req->image->extension();
+            $pro->thumbnail = $name;
 
             try {
                 $pro->save();
+                $req->image->move(public_path('uploads/thumbnails'), $name);
                 $id = $pro->id;
                 $att = new ProductAttribute();
                 $att->product_id = $id;
@@ -159,8 +168,10 @@ class ProductController extends Controller
             'name' => 'required',
             'desc' => 'required|max:500',
             'catid' => 'required',
+            'type' => 'required',
             'price' => 'required',
             'quantity' => 'required',
+            'image' => 'mimes:jpeg,jpg,png',
             'filenames.*' => 'mimes:jpeg,jpg,png',
             'pid' => 'required',
         ], [
@@ -175,6 +186,8 @@ class ProductController extends Controller
 
             'quantity.required' => "Enter quantity",
 
+            'image.mimes' => "Only jpeg, jpg and png files allowed",
+
             'filenames.mimes' => "Only jpeg, jpg and png files allowed",
         ]);
         if ($validateProduct) {
@@ -182,12 +195,17 @@ class ProductController extends Controller
             $pro = Product::where('id', '=', $id)->first();
             $pro->name = $req->name;
             $pro->description = $req->desc;
+            $pro->type = $req->type;
             $pro->category_id = $req->catid;
             $pro->price = $req->price;
             $pro->quantity = $req->quantity;
 
             try {
                 $pro->save();
+                if($req->image){
+                    $name = $pro->thumbnail;
+                    $req->image->move(public_path('uploads/thumbnails'), $name);
+                }
                 $att = ProductAttribute::where('product_id', '=', $id)->first();
                 $att->category_id = $req->catid;
                 $att->price = $req->price;
@@ -236,6 +254,8 @@ class ProductController extends Controller
                     $img->delete();
                 }
             }
+            $img = public_path('uploads/thumbnails/') . $pro->thumbnail;
+            unlink($img);
             $pro->delete();
             return "Product deleted successfully";
         } catch (\Illuminate\Database\QueryException $e) {

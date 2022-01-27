@@ -4,29 +4,11 @@
 @section('content')
 <!-- yield section start -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!-- <script>
-    $(document).ready(function() {
-        $(".delpro").click(function() {
-            var id = $(this).attr('pid')
-            if (confirm('Do you want to delete this product?')) {
-                $.ajax({
-                    url: "{{url('deleteproduct')}}",
-                    method: 'delete',
-                    data: {
-                        _token: '{{csrf_token()}}',
-                        pid: id
-                    },
-                    success: function(response) {
-                        alert(response)
-                        window.location.reload();
-                    }
-                })
-            }
-
-        })
-
-    })
-</script> -->
+<script>
+    setTimeout(function() {
+        $('.alert-div').fadeOut('fast');
+    }, 3000); // <-- time in milliseconds
+</script>
 <div class="container">
 
     <!-- Header content -->
@@ -47,12 +29,12 @@
     </section>
 
     @if(Session::has('Success'))
-    <div class="alert alert-success">
+    <div class="alert alert-success alert-div">
         {{Session::get('Success')}}
     </div>
     @endif
     @if(Session::has('Error'))
-    <div class="alert alert-danger">
+    <div class="alert alert-danger alert-div">
         {{Session::get('Error')}}
     </div>
     @endif
@@ -80,9 +62,8 @@
                                         <th class="col-2 text-center">User</th>
                                         <th class="col-4 text-center">Products</th>
                                         <th class="col-1 text-center">Total</th>
-                                        <th class="col-1 text-center">Payment</th>
-                                        <th class="col-1 text-center">Status</th>
-                                        <th class="col-2 text-center">Action</th>
+                                        <th class="col-2 text-center">Payment</th>
+                                        <th class="col-2 text-center">Order Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -97,27 +78,62 @@
                                         <td class="text-center">{{$user->email}}</td>
                                         @endif
                                         @endforeach
-                                        
+
                                         <td>
-                                        @foreach($proDetails as $pdet)
-                                        @if($ord->id == $pdet->order_id)
-                                        
+                                            @foreach($proDetails as $pdet)
+                                            @if($ord->id == $pdet->order_id)
+
                                             @foreach($products as $pro)
                                             @if($pdet->product_id == $pro->id)
-                                            <p>{{$pro->name}} x {{$pdet->quantity}} at Rs. {{$pdet->price}}</p>
+                                            <p>{{$pro->name}} x {{$pdet->quantity}} at Rs. {{$pdet->price}} = Total Rs. {{$pdet->total}}</p>
                                             @endif
                                             @endforeach
-                                        
-                                        @endif
-                                        @endforeach
+
+                                            @endif
+                                            @endforeach
+
+                                            @foreach($coupon as $c)
+                                            @if($c->id == $ord->coupon_id)
+                                            <p class="text-info">Coupon : {{$c->code}}</p>
+                                            @endif
+                                            @endforeach
                                         </td>
                                         <td class="text-center">Rs. {{ $ord->total }}</td>
-                                        <td class="text-center">Paid</td>
-                                        <td class="text-center">{{ $ord->status }}</td>
+                                        @if( $ord->payment_mode == 0)
                                         <td class="text-center">
-                                            <a href="view-order-{{ $ord->id }}" class="btn btn-warning">View</a>
-                                            <a href="edit-product-{{ $ord->id }}" class="btn btn-info text-white">Change Status</a>
+                                            COD - <span class="text-danger">Pending</span>
                                         </td>
+                                        @elseif($ord->payment_mode == 1)
+                                        <td class="text-center">
+                                            COD - <span class="text-success">Paid</span>
+                                        </td>
+                                        @else
+                                        <td class="text-center text-success">
+                                            Paid Online
+                                        </td>
+                                        @endif
+                                        <td class="text-center">
+                                            <form method="post" action="{{url('/ordervalid')}}/{{$ord->id}}">
+                                                @csrf()
+                                                <input type="hidden" name="ordid" value="{{$ord->id}}">
+                                                <select name="status" class="form-control">
+                                                    <option value="0" <?php if ($ord->status == 0) {
+                                                                            echo 'selected';
+                                                                        } ?>>Placed</option>
+                                                    <option value="1" <?php if ($ord->status == 1) {
+                                                                            echo 'selected';
+                                                                        } ?>>Confirmed</option>
+                                                    <option value="2" <?php if ($ord->status == 2) {
+                                                                            echo 'selected';
+                                                                        } ?>>Shipped</option>
+                                                    <option value="3" <?php if ($ord->status == 3) {
+                                                                            echo 'selected';
+                                                                        } ?>>Delivered</option>
+                                                </select><br />
+                                                <input type="submit" class="btn btn-primary" name="ordstatus" value="Change Status">
+                                            </form>
+                                        </td>
+
                                     </tr>
                                     @php
                                     $sn++;

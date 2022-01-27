@@ -22,9 +22,11 @@
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
+                @if( Auth::user()->role == 1 || Auth::user()->role == 2)
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="dashboard" class="nav-link">Dashboard</a>
                 </li>
+                @endif
             </ul>
 
             <!-- Right navbar links -->
@@ -164,6 +166,33 @@
                                 <p>
                                     <i class="fa fa-envelope nav-icon"></i>
                                     Contact
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="cms" class="nav-link">
+                                <p>
+                                    <i class="fas fa-pager nav-icon"></i>
+                                    CMS
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="coupon" class="nav-link">
+                                <p>
+                                    <i class="fa fa-ticket nav-icon"></i>
+                                    Coupon
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="config" class="nav-link">
+                                <p>
+                                    <i class="fa fa-circle nav-icon"></i>
+                                    Configuration
                                 </p>
                             </a>
                         </li>

@@ -20,7 +20,7 @@ class CreateContactsTable extends Migration
             $table->string('subject', 100);
             $table->string('message');
             $table->string('reply')->nullable();
-            $table->tinyInteger('status')->nullable();
+            $table->tinyInteger('status');
             $table->timestamps();
         });
     }

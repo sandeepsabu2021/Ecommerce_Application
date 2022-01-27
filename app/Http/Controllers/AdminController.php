@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coupon;
+use App\Models\OrderDetail;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\UserOrder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
@@ -35,7 +40,7 @@ class AdminController extends Controller
         return view('admin.pages.user.add-user', ['roleData' => $roleData]);
     }
 
-    public function userValid(Request $req)    //user validation
+    public function userValid(Request $req)    //user reg validation
     {
         $validateUser = $req->validate([
             'fname' => 'required|regex:/^[a-zA-Z ]{2,100}$/',
@@ -223,6 +228,93 @@ class AdminController extends Controller
         } catch (\Illuminate\Database\QueryException $e) {
             return "Error deleting user" . $e->getMessage();
         }
+    }
+
+    public function dashboard() //dashboard page
+    {
+        $typeData = Role::all();        //user count
+        $data = DB::select(DB::raw("select count(*) as user_count,
+        role from users group by role"));
+        $pieChart = "";
+        $total = 0;
+        foreach ($data as $a) {
+            foreach ($typeData as $type) {
+                if ($type->role_id == $a->role) {
+                    $name = $type->role_name;
+                    $pieChart .= "['" . $name . "',     " . $a->user_count . "],";
+                    $total += $a->user_count;
+                }
+            }
+        }
+
+        $status = DB::select(DB::raw("select count(*) as user_count,
+        status from users group by status"));   //active inactive user count
+        $barChart = "";
+        foreach ($status as $s) {
+            if ($s->status == '1') {
+                $name = 'Active';
+            } else {
+                $name = 'Inactive';
+            }
+            $barChart .= "['" . $name . "',     " . $s->user_count . "],";
+        }
+
+        $proData = Product::all();      //products sold count
+        $pdata = DB::select(DB::raw("select count(*) as product_count,
+        product_id from order_details group by product_id"));
+        $proChart = "";
+        $prototal = 0;
+        foreach ($pdata as $p) {
+            foreach ($proData as $pro) {
+                if ($pro->id == $p->product_id) {
+                    $quant = OrderDetail::where('product_id', '=', $pro->id)->get();
+                    $count = 0;
+                    foreach($quant as $q){
+                        $count = $count + $q->quantity;
+                    }
+                    $pname = $pro->name;
+                    $proChart .= "['" . $pname . "',     " . $count . "],";
+                    $prototal += $count;
+                }
+            }
+        }
+
+        $copData = Coupon::all();   //coupon used count
+        $cdata = DB::select(DB::raw("select count(*) as coupon_count,
+        coupon_id from user_orders group by coupon_id"));
+        $copChart = "";
+        $copcount = 0;
+        foreach ($cdata as $c) {
+            foreach ($copData as $cop) {
+                if ($cop->id == $c->coupon_id) {
+                    $cname = $cop->code;
+                    $copChart .= "['" . $cname . "',     " . $c->coupon_count . "],";
+                    $copcount += $c->coupon_count;
+                }
+            }
+        }
+
+        $orders = UserOrder::all();     //orders placed count
+        $ordcount = 0;
+        foreach($orders as $ord){
+            $ordcount = $ordcount + 1;
+        }
+
+        $pieChart = rtrim($pieChart, ',');
+        $barChart = rtrim($barChart, ',');
+        $proChart = rtrim($proChart, ',');
+        $copChart = rtrim($copChart, ',');
+
+        return view('admin.pages.user.dashboard', [
+            'pieChart' => $pieChart,
+            'barChart' => $barChart,
+            'proChart' => $proChart,
+            'copChart' => $copChart,
+            'total' => $total,
+            'ptotal' => $prototal,
+            'cop_count' => $copcount,
+            'order' => $ordcount
+        ]);
     }
 
     public function logout()    // logout

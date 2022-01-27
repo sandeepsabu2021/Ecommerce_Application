@@ -19,8 +19,10 @@ class CreateProductsTable extends Migration
             $table->string('description');
             $table->uuid('code')->unique();
             $table->decimal('price');
+            $table->string('thumbnail');
             $table->bigInteger('quantity');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade')->onUpdate('cascade');
+            $table->tinyInteger('type');
             $table->timestamps();
             $table->softDeletes();
         });

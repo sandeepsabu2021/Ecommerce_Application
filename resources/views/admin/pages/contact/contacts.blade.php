@@ -4,7 +4,11 @@
 @section('content')
 <!-- yield section start -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+<script>
+    setTimeout(function() {
+        $('.alert-div').fadeOut('fast');
+    }, 3000); // <-- time in milliseconds
+</script>
 
 <div class="container">
 
@@ -27,12 +31,12 @@
     <!-- /Header content -->
 
     @if(Session::has('Success'))
-    <div class="alert alert-success">
+    <div class="alert alert-success alert-div">
         {{Session::get('Success')}}
     </div>
     @endif
     @if(Session::has('Error'))
-    <div class="alert alert-danger">
+    <div class="alert alert-danger alert-div">
         {{Session::get('Error')}}
     </div>
     @endif
@@ -72,9 +76,15 @@
                                         <td class="text-center">{{ $con->email }}</td>
                                         <td class="text-center">{{ $con->subject }}</td>
                                         <td class="text-center">{{ $con->message }}</td>
-                                        <td class="text-center">{{ $con->status }}</td>
+                                        @if($con->status == 1)
+                                        <td class="text-center text-success">Replied</td>
+                                        @else
+                                        <td class="text-center text-danger">Received</td>
+                                        @endif
                                         <td class="text-center">
+                                            @if($con->status == 0)
                                             <a href="reply-contact-{{ $con->id }}" class="btn btn-warning">Reply</a>
+                                            @endif
                                         </td>
                                     </tr>
                                     @php

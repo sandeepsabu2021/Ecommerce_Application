@@ -1,5 +1,11 @@
 @extends('admin.master')
 <!-- main layout -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    setTimeout(function() {
+        $('.alert-div').fadeOut('fast');
+    }, 3000); // <-- time in milliseconds
+</script>
 
 @section('content')
 <!-- Header content -->
@@ -20,12 +26,12 @@
 <!-- /Header content -->
 
 @if(Session::has('Success'))
-<div class="alert alert-success">
+<div class="alert alert-success alert-div"> 
     {{Session::get('Success')}}
 </div>
 @endif
 @if(Session::has('Error'))
-<div class="alert alert-danger">
+<div class="alert alert-danger alert-div">
     {{Session::get('Error')}}
 </div>
 @endif
@@ -39,13 +45,15 @@
                 <div class="card">
                     <!-- card-header -->
                     <div class="card-header">
-                        <h3 class="card-title">Home</h3>
+                        <h3 class="card-title">Welcome {{ Auth::user()->first_name }}</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- card-body -->
+                    @if( Auth::user()->role == 1 || Auth::user()->role == 2)
                     <div class="card-body">
                         <a href="dashboard" class="btn btn-primary btn-large mr-2">Dashboard</a>
                     </div>
+                    @endif
                     <!-- /.card-body -->
                 </div>
                 <!-- /.card -->

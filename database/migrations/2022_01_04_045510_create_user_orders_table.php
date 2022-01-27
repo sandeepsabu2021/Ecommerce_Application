@@ -18,7 +18,11 @@ class CreateUserOrdersTable extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('address_id')->constrained('user_addresses');
             $table->decimal('total');
-            $table->tinyInteger('status')->default(0);
+            $table->tinyInteger('status');
+            $table->tinyInteger('payment_mode');
+            $table->integer('coupon_id')->nullable();
+            $table->integer('transaction_id')->nullable();
+            $table->string('comment')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -5,24 +5,32 @@
 <!-- yield section start -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-    $(document).ready(function(){
-        $(".delcat").click(function(){
+    $(document).ready(function() {
+        $(".delcat").click(function() {
             var id = $(this).attr('cid')
-            if(confirm('Category and all related products will be deleted. Are you sure?')){
+            if (confirm('Category and all related products will be deleted. Are you sure?')) {
                 $.ajax({
-                    url:"{{url('deletecat')}}",
+                    url: "{{url('deletecat')}}",
                     method: 'delete',
-                    data: {_token:'{{csrf_token()}}' , cid:id},
-                    success:function(response){
+                    data: {
+                        _token: '{{csrf_token()}}',
+                        cid: id
+                    },
+                    success: function(response) {
                         alert(response)
                         window.location.reload();
                     }
                 })
             }
-            
+
         })
 
     })
+</script>
+<script>
+    setTimeout(function() {
+        $('.alert-div').fadeOut('fast');
+    }, 3000); // <-- time in milliseconds
 </script>
 
 <div class="container">
@@ -46,16 +54,16 @@
     <!-- /Header content -->
 
     @if(Session::has('Success'))
-    <div class="alert alert-success">
+    <div class="alert alert-success alert-div">
         {{Session::get('Success')}}
     </div>
     @endif
     @if(Session::has('Error'))
-    <div class="alert alert-danger">
+    <div class="alert alert-danger alert-div">
         {{Session::get('Error')}}
     </div>
     @endif
-    
+
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
