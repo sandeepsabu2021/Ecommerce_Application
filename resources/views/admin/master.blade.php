@@ -157,16 +157,6 @@
                         </li>
                         @endif
 
-                        @if( Auth::user()->role == 1 || Auth::user()->role == 2 || Auth::user()->role == 4)
-                        <li class="nav-item">
-                            <a href="order" class="nav-link">
-                                <p>
-                                    <i class="fas fa-clipboard-list nav-icon"></i>
-                                    Order
-                                </p>
-                            </a>
-                        </li>
-                        @endif
 
                         @if( Auth::user()->role == 1 || Auth::user()->role == 2)
                         <li class="nav-item">
@@ -183,24 +173,6 @@
                                 <p>
                                     <i class="fas fa-pager nav-icon"></i>
                                     CMS
-                                </p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="coupon" class="nav-link">
-                                <p>
-                                    <i class="fa fa-ticket nav-icon"></i>
-                                    Coupon
-                                </p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="config" class="nav-link">
-                                <p>
-                                    <i class="fa fa-circle nav-icon"></i>
-                                    Configuration
                                 </p>
                             </a>
                         </li>

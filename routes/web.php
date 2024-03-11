@@ -75,12 +75,6 @@ Route::middleware([IsLogin::class])->group(function () {
         Route::post('/editconfigvalid', [OtherController::class, 'editConfigValid']);
         Route::delete('/deleteconfig', [OtherController::class, 'delConfig']);
 
-        Route::get('/coupon', [OtherController::class, 'coupon']);
-        Route::get('/add-coupon', [OtherController::class, 'addCoupon']);
-        Route::post('/couponvalid', [OtherController::class, 'couponValid']);
-        Route::get('/edit-coupon-{id}', [OtherController::class, 'editCoupon']);
-        Route::post('/editcouponvalid', [OtherController::class, 'editCouponValid']);
-        Route::delete('/deletecoupon', [OtherController::class, 'delCoupon']);
 
         Route::get('/dashboard', [AdminController::class, 'dashboard']);
 
@@ -116,9 +110,6 @@ Route::middleware([IsLogin::class])->group(function () {
         Route::get('/ordmanage', function () {
             return "Session - Permission available";
         });
-
-        Route::get('/order', [OrderController::class, 'order']);
-        Route::post('/ordervalid/{id}', [OrderController::class, 'orderValid']);
     });
 
     Route::get('/logout', [AdminController::class, 'logout']);
