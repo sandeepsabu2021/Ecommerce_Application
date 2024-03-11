@@ -118,6 +118,14 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="vendor" class="nav-link">
+                                <p>
+                                    <i class="fa fa-users nav-icon"></i>
+                                    Vendor
+                                </p>
+                            </a>
+                        </li>
 
                         <li class="nav-item">
                             <a href="banner" class="nav-link">

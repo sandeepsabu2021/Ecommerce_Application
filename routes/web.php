@@ -13,6 +13,7 @@ use App\Http\Middleware\IsLogin;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsInvManager;
 use App\Http\Middleware\IsOrdManager;
+use App\Http\Controllers\VendorController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -51,6 +52,14 @@ Route::middleware([IsLogin::class])->group(function () {
         Route::get('/edit-banner-{id}', [BannerController::class, 'editBanner']);
         Route::post('/editbannervalid', [BannerController::class, 'editBannerValid']);
         Route::delete('/deletebanner', [BannerController::class, 'delBanner']);
+
+
+        Route::get('/vendor', [VendorController::class, 'vendor']);
+        Route::get('/add-vendor', [VendorController::class, 'addVendor']);
+        Route::post('/vendorvalid', [VendorController::class, 'vendorValid']);
+        Route::get('/edit-vendor-{id}', [VendorController::class, 'editVendor']);
+        Route::post('/editvendorvalid', [VendorController::class, 'editVendorValid']);
+        Route::delete('/deletevendor', [VendorController::class, 'delVendor']);
 
         Route::get('/cms', [OtherController::class, 'cms']);
         Route::get('/add-cms', [OtherController::class, 'addCms']);
