@@ -1,19 +1,20 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\BannerController;
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\OtherController;
-use App\Http\Middleware\IsLogin;
 use App\Http\Middleware\IsAdmin;
+use App\Http\Middleware\IsLogin;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\IsInvManager;
 use App\Http\Middleware\IsOrdManager;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FaqController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OtherController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -61,12 +62,23 @@ Route::middleware([IsLogin::class])->group(function () {
         Route::post('/editvendorvalid', [VendorController::class, 'editVendorValid']);
         Route::delete('/deletevendor', [VendorController::class, 'delVendor']);
 
+
+        Route::get('/faq', [FaqController::class, 'faq']);
+        Route::get('/add-faq',[FaqController::class, 'addFaq']);
+        Route::post('/faqvalid', [FaqController::class, 'faqValid']);
+        Route::get('/edit-faq-{id}', [FaqController::class, 'editFaq']);
+        Route::post('/editfaqvalid', [FaqController::class, 'editFaqValid']);
+        Route::delete('/deletefaq', [FaqController::class, 'delFaq']);
+
+
         Route::get('/cms', [OtherController::class, 'cms']);
         Route::get('/add-cms', [OtherController::class, 'addCms']);
         Route::post('/cmsvalid', [OtherController::class, 'cmsValid']);
         Route::get('/edit-cms-{id}', [OtherController::class, 'editCms']);
         Route::post('/editcmsvalid', [OtherController::class, 'editCmsValid']);
         Route::delete('/deletecms', [OtherController::class, 'delCms']);
+
+      
 
         Route::get('/config', [OtherController::class, 'config']);
         Route::get('/add-config', [OtherController::class, 'addConfig']);
@@ -81,6 +93,8 @@ Route::middleware([IsLogin::class])->group(function () {
         Route::get('/contact', [ContactController::class, 'contact']);
         Route::get('/reply-contact-{id}', [ContactController::class, 'replyContact']);
         Route::post('/replyvalid', [ContactController::class, 'replyValid']);
+
+
 
     });
 

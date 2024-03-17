@@ -90,7 +90,7 @@ class VueApiController extends Controller
 
     public function banner()    // display banners api
     {
-        $banner = Banner::all();
+        $banner = Banner::orderBy('id','DESC')->limit(5)->get();
         return response([
             'banner' => TaskResource::collection($banner),
         ]);

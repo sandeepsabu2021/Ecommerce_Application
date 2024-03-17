@@ -176,6 +176,15 @@
                                 </p>
                             </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a href="faq" class="nav-link">
+                                <p>
+                                    <i class="fas fa-pager nav-icon"></i>
+                                    FAQ
+                                </p>
+                            </a>
+                        </li>
                         @endif
                     </ul>
                 </nav>
