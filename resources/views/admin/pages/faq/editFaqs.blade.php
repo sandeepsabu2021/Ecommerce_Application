@@ -80,7 +80,7 @@
 
                     
                             <input type="hidden" name="id" id="id" value="{{$faqData->id}}">
-                            <input type="submit" class="btn btn-primary btn-large" name="editBanner" value="Update Banner">
+                            <input type="submit" class="btn btn-primary btn-large" name="editFaq" value="Update FAQ">
 
                         </div>
                     </form>

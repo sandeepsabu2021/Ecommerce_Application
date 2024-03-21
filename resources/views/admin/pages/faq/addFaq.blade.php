@@ -78,7 +78,7 @@
                                     </div>
                                 </div>
                             
-                            <input type="submit" class="btn btn-primary btn-large"  value="Add vendor">
+                            <input type="submit" class="btn btn-primary btn-large"  value="Add FAQ">
 
                         </div>
                     </form>
